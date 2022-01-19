@@ -4,6 +4,7 @@ const hbs = require("hbs");
 const weather = require("./utils/weather");
 
 const app = express();
+const port = process.env.PORT || 3000;
 const publicDirectoryPath = path.join(__dirname, "../public");
 const viewsDirectoryPath = path.join(__dirname, "../templates/views");
 const partialsDirectoryPath = path.join(__dirname, "../templates/partials");
@@ -43,15 +44,14 @@ app.get("/weather", (req, res) => {
     context = {
       error: "Please provided an address.",
     };
-
     return res.send(context);
   }
 
   weather.forcast(address, (error, forcastData) => {
     if (error) {
       context = {
-        error:error,
-      }
+        error: error,
+      };
       return res.send(context);
     } else {
       const context = {
@@ -79,7 +79,6 @@ app.get("*", (req, res) => {
   res.render("404", context);
 });
 
-app.listen(3000, () => {
-  console.log("Server starting...");
-  console.log("Listening at port: 3000");
+app.listen(port, () => {
+  console.log("Starting server at port: " + port);
 });
